@@ -1,5 +1,5 @@
 <template>
-  <div class="article-container">
+  <div class="article-container break-all">
     <MarkdownRender :content="articleContent" />
   </div>
 </template>

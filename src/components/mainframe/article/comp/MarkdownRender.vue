@@ -18,7 +18,7 @@ import { computed, reactive } from 'vue';
 import MarkdownIt from 'markdown-it';
 
 const props = defineProps<{ content: string }>();
-const md = new MarkdownIt({ html: true, linkify: true });
+const md = new MarkdownIt({ html: true, linkify: true, breaks: true });
 
 const meta = reactive<Record<string, string>>({
   title: '',
