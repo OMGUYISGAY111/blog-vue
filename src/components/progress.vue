@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import Section from './section.vue';
+import Navbar from './navbar.vue';
 
 interface Section {
   id: string;
@@ -28,6 +29,8 @@ const sections = ref<Section[]>(Array.from({ length: 10 }, (_, i) => ({
 </script>
 
 <template>
+
+
 <div class="flex">
     <aside class="fixed left-0 top-10 w-48 h-screen bg-gray-100 p-4 overflow-y-auto">
       <h2 class="font-bold mb-4">目录</h2>

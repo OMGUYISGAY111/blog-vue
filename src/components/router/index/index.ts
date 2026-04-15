@@ -7,7 +7,8 @@ const router = createRouter({
   routes: [
     { path: '/', component: Homepage },
     { path: '/test', component: () => import('../views/test.vue') },
-    { path: '/article', component: () => import('../../progress.vue')}
+    { path: '/article', component: () => import('../../progress.vue')},
+    { path: '/about', component: () => import('../../mainframe/about/about.vue')}
     // ... 其他路由
   ]
 })

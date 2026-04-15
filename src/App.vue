@@ -6,7 +6,8 @@ import Backtop from './components/backtop.vue';
 
 <template>
   <div>
-    <main>
+    <Navbar></Navbar>
+    <main class=" relative top-16">
       <RouterView></RouterView>
       <Backtop></Backtop>
     </main>

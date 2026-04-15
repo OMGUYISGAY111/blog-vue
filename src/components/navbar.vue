@@ -26,6 +26,8 @@ const handleSearch = () => {
           <a href="/">my website</a>
         </div>
 
+        <div class=" grow"></div>
+
         <!--nav-->
         <div class="hidden md:flex space-x-16">
           <RouterLink to="/" class="text-gray-500 hover:text-blue-400">home</RouterLink>
@@ -38,7 +40,7 @@ const handleSearch = () => {
         <div class=" flex space-x-4 items-center">
 
           <!--search-->
-          <div class=" hidden sm:block">
+          <!-- <div class=" hidden sm:block">
             <div class=" relative">
               <input
               type="text"
@@ -51,10 +53,10 @@ const handleSearch = () => {
                 <Search></Search>
               </button>
             </div>
-          </div>
+          </div> -->
 
-          <button class=" p-2 bg-gray-200 rounded-2xl"><Moon/></button>
-          <button @click="MobileMenuDisplay = !MobileMenuDisplay" class="md:hidden p-2 bg-gray-200 rounded-2xl"><Menu></Menu></button>
+          <!-- <button class=" p-2 bg-gray-200 rounded-2xl"><Moon/></button>
+          <button @click="MobileMenuDisplay = !MobileMenuDisplay" class="md:hidden p-2 bg-gray-200 rounded-2xl"><Menu></Menu></button> -->
         </div>
       </div>
     </div>
