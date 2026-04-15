@@ -7,9 +7,16 @@ const router = createRouter({
   routes: [
     { path: '/', component: Homepage },
     { path: '/test', component: () => import('../views/test.vue') },
-    { path: '/article', component: () => import('../../progress.vue')},
+    
+    { path: '/article', component: () => import('../../mainframe/article/article-list.vue') },
+    // 修改这里：增加 :id 参数，这样 article 页面就可以通过 route.params.id 知道要读哪个文件
+    { 
+      path: '/article/:id', 
+      component: () => import('../../mainframe/article/article.vue'),
+      props: true // 允许将 id 作为组件的 prop 传入
+    },
+    
     { path: '/about', component: () => import('../../mainframe/about/about.vue')}
-    // ... 其他路由
   ]
 })
 
