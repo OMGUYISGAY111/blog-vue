@@ -10,7 +10,7 @@ import TypeName from './comp/typeName.vue';
         <TypeName :strings="['OMGUY','yolomany','Null Ghost']"
                   :typeSpeed="80"/>...
     </p>
-    <p>TODOvndsojvnbosdbn</p>
+    <p>TODOvndsojvnbosdbn我佛了整个网页全是ai写的算了能用就行</p>
   </div>
 </template>
 
