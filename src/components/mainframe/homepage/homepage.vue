@@ -1,4 +1,5 @@
 <script setup>
+import PersonCard from '../../personCard.vue';
 import HomeNav from './comp/homeNav.vue';
 
 // 组件逻辑
@@ -16,6 +17,7 @@ import HomeNav from './comp/homeNav.vue';
       </div>
 
       <!-- <HomeNav></HomeNav> -->
+      <!-- <PersonCard :name="'Null Website'" :detail="'hello world'"></PersonCard> -->
 
     </div>
 
