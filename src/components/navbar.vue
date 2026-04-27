@@ -23,7 +23,7 @@ const handleSearch = () => {
 
         <!--logo-->
         <div class="text-2xl font-bold text-gray-500">
-          <a href="/">my website</a>
+          <RouterLink to="/">my website</RouterLink>
         </div>
 
         <div class=" grow"></div>
