@@ -1,0 +1,32 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]  # 这里的名字要和你的主分支名一致（main 或 master）
+
+permissions:
+  contents: write # 授予虚拟机推送到仓库分支的权限
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install and Build
+        run: |
+          npm install
+          npm run build  # 这里会执行 Vite 构建，扫描你的 md 文件
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }} # 自动生成的 token，无需手动配置
+          publish_dir: ./dist # Vite 默认输出目录
