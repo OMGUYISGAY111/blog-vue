@@ -1,0 +1,18 @@
+import{c as e}from"./MarkdownRender-DeUTUfMX.js";var t=e({default:()=>n}),n=`---
+title: 如何编写高质量的博客
+date: 2026-04-15
+tags: [Markdown, 编程, 写作]
+---
+
+# 这是一个一级标题
+
+这里是你的正文内容，支持**加粗**和*斜体*。
+duiba?
+
+## 核心观点 1
+这里你可以插入代码块，向读者展示你的思路：
+
+\`\`\`javascript
+function greet() {
+  console.log("Hello World!");
+}`;export{t as n,n as t};

@@ -1,0 +1,12 @@
+import{c as e}from"./MarkdownRender-DeUTUfMX.js";var t=e({default:()=>n}),n=`---
+title: 真正的hello world?
+date: 2026-04-16
+tags: [Markdown, 编程, 写作]
+---
+
+在对ai一阵输出后弄了个完全不如找个框架部署的博客，心情有点复杂
+目前这方案属于是自嗨，没法让别人看见（我觉得也没人看）
+ai帮我制造了新的倒垃圾的场所，我草不写了
+目前我的水平对于怎么看待造轮子完全没法有观点但在ai帮助下不劳而获从0搓轮子（并没有从0）确实很爽
+哦当我没说
+hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh`;export{t as n,n as t};
