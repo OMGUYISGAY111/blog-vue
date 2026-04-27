@@ -6,7 +6,7 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: '/', component: Homepage },
-    { path: '/test', component: () => import('../views/test.vue') },
+    { path: '/test', component: () => import('../views/test3.vue') },
     
     { path: '/article', component: () => import('../../mainframe/article/article-list.vue') },
     // 修改这里：增加 :id 参数，这样 article 页面就可以通过 route.params.id 知道要读哪个文件
