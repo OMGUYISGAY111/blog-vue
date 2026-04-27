@@ -2,31 +2,41 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main ]  # 这里的名字要和你的主分支名一致（main 或 master）
+    branches: [ main ]
 
 permissions:
-  contents: write # 授予虚拟机推送到仓库分支的权限
+  contents: write
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # 1. 在装 Node 之前先安装 pnpm
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9 # 或者你本地使用的版本
+
+      # 2. 安装 Node 并配置 pnpm 缓存
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: 'npm'
+          node-version: 24
+          cache: 'pnpm' # 既然有 lock 文件，现在可以开心地启用缓存了
 
+      # 3. 使用 pnpm 安装依赖并构建
       - name: Install and Build
         run: |
-          npm install
-          npm run build  # 这里会执行 Vite 构建，扫描你的 md 文件
+          pnpm install --frozen-lockfile # 确保完全按照你的 pnpm-lock.yaml 安装
+          pnpm run build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }} # 自动生成的 token，无需手动配置
-          publish_dir: ./dist # Vite 默认输出目录
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
