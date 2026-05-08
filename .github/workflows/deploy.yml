@@ -1,42 +1,47 @@
-name: Deploy to GitHub Pages
+name: Deploy Blog
 
 on:
+  # 当你向 main 分支推送代码时触发
   push:
-    branches: [ main ]
+    branches: ["main"]
+  # 允许手动触发
+  workflow_dispatch:
 
+# 设置权限以允许部署到 GitHub Pages
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 1. 在装 Node 之前先安装 pnpm
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 9 # 或者你本地使用的版本
-
-      # 2. 安装 Node 并配置 pnpm 缓存
-      - name: Setup Node
+      - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: 24
-          cache: 'pnpm' # 既然有 lock 文件，现在可以开心地启用缓存了
+          node-version: 20
+          cache: 'npm'
 
-      # 3. 使用 pnpm 安装依赖并构建
-      - name: Install and Build
-        run: |
-          pnpm install --frozen-lockfile # 确保完全按照你的 pnpm-lock.yaml 安装
-          pnpm run build
+      - name: Install dependencies
+        run: npm install
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Build Project
+        # 这里会运行 npm run gen (生成JSON) 和 vite build (打包)
+        run: npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          # Vite 默认打包输出目录是 dist
+          path: './dist'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

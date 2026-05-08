@@ -4,8 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc -b && vite build",
+    "gen": "node ./src/backend/api/readMD.js",
+    "dev": "npm run gen && vite",
+    "build": "npm run gen && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
