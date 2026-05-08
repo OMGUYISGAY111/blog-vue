@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { el, fa, he } from 'element-plus/es/locale/index.mjs';
-import { Rss } from 'lucide-vue-next';
-import { m } from 'vue-router/dist/router-CWoNjPRp.mjs';
+import { useRoute, useRouter } from 'vue-router'
 
 // 组件逻辑
 function moveZeroes(nums: number[]): void {
