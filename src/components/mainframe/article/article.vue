@@ -19,7 +19,8 @@ const fetchArticle = async (id: string) => {
   try {
     const baseUrl = import.meta.env.BASE_URL;
     // 直接从 public/docs/ 获取
-    const response = await fetch(`${baseUrl}docs/${id}.md`);
+    const timestamp = Date.now();
+    const response = await fetch(`${baseUrl}docs/${id}.md?t=${timestamp}`);
     
     if (response.ok) {
       articleContent.value = await response.text();
