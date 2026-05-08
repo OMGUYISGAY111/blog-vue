@@ -14,10 +14,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive } from 'vue';
+import { ref, onMounted, computed, reactive } from 'vue';
+import { useRoute } from 'vue-router';
 import MarkdownIt from 'markdown-it';
 
-const props = defineProps<{ content: string }>();
+const route = useRoute();
+const rawContent = ref('');
 const md = new MarkdownIt({ html: true, linkify: true, breaks: true });
 
 const meta = reactive<Record<string, string>>({
@@ -25,30 +27,42 @@ const meta = reactive<Record<string, string>>({
   date: ''
 });
 
+onMounted(async () => {
+  try {
+    // 自动拼接 base 路径，例如变成 /blog-vue/docs/4.md
+    const baseUrl = import.meta.env.BASE_URL; 
+    const response = await fetch(`${baseUrl}docs/${route.params.id}.md`);
+    
+    if (response.ok) {
+      rawContent.value = await response.text();
+    } else {
+      console.error("文件不存在");
+    }
+  } catch (e) {
+    console.error("加载失败", e);
+  }
+});
+
 const renderedHtml = computed(() => {
-  if (!props.content) return '';
+  if (!rawContent.value) return '';
 
-  // 修改：增加 \s* 匹配可能的空行，并且用 .*? 匹配任意字符
-  // 使用 /s 标志（dotAll）让 . 可以匹配换行符
-  const metaRegex = /^---\s*?\n([\s\S]*?)\n---\s*?\n([\s\S]*)$/m;
-  const match = props.content.match(metaRegex);
-
-  let markdownContent = props.content;
+  // 改进你的正则：兼容不同操作系统的换行符 \r\n
+  const metaRegex = /^---\s*[\r\n]+([\s\S]*?)[\r\n]+---\s*[\r\n]+([\s\S]*)$/;
+  const match = rawContent.value.match(metaRegex);
 
   if (match) {
-    const metaString = match[1]; // 拿到 --- 里面的内容
-    markdownContent = match[2];  // 拿到剩余的 Markdown 正文
+    const metaString = match[1];
+    const markdownContent = match[2];
 
-    // 解析 metaString（简单的键值对切割）
-    const lines = metaString.split('\n');
-    lines.forEach(line => {
-      const [key, ...values] = line.split(':');
-      if (key && values.length > 0) {
-        meta[key.trim()] = values.join(':').trim();
-      }
+    // 解析元数据
+    metaString.split('\n').forEach(line => {
+      const [key, ...val] = line.split(':');
+      if (key && val.length > 0) meta[key.trim()] = val.join(':').trim();
     });
-  }
 
-  return md.render(markdownContent);
+    return md.render(markdownContent);
+  }
+  
+  return md.render(rawContent.value);
 });
 </script>
