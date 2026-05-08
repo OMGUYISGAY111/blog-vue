@@ -41,6 +41,7 @@ async function generate() {
         await fs.writeFile(OUTPUT_PATH, JSON.stringify(list, null, 2));
         
         console.log(`✅ 成功生成！共计 ${list.length} 篇文章。`);
+        console.log(list);
     } catch (err) {
         console.error('❌ 生成失败:', err.message);
     }
