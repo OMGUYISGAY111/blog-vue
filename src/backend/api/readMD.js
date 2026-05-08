@@ -21,13 +21,15 @@ async function generate() {
                 
                 // 获取文件系统状态
                 const stats = await fs.stat(filePath);
+
+                console.log(stats.mtime.toLocaleString('zh-CN', { hour12: false }));
                 
                 list.push({
                     id: file.replace('.md', ''),
                     // 直接用文件名当标题
                     title: file.replace('.md', ''), 
                     // 使用修改日期，格式化为 YYYY-MM-DD
-                    date: stats.mtime.toISOString().split('T')[0],
+                    date: stats.mtime.toLocaleString('zh-CN', { hour12: false }),
                     // 保留原始时间对象用于精准排序
                     rawDate: stats.mtime 
                 });
