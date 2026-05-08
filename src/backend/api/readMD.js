@@ -1,11 +1,12 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { execSync } from 'child_process'; // 引入子进程模块执行 Git 命令
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// 路径配置：根据你的实际目录层级调整 ../ 的数量
+// 路径配置
 const MD_DIR = path.join(__dirname, '../../../public/docs'); 
 const OUTPUT_PATH = path.join(__dirname, '../../assets/blogList.json');
 
@@ -15,35 +16,52 @@ async function generate() {
         const list = [];
 
         for (const file of files) {
-            // 只处理 .md 文件
             if (file.endsWith('.md')) {
                 const filePath = path.join(MD_DIR, file);
                 
-                // 获取文件系统状态
-                const stats = await fs.stat(filePath);
+                let fileDate;
+                try {
+                    // --- 核心修复：获取 Git 记录的最后修改时间 ---
+                    // --format=%cI 返回 ISO 8601 格式的时间
+                    const gitDateStr = execSync(`git log -1 --format=%cI -- "${filePath}"`).toString().trim();
+                    
+                    if (gitDateStr) {
+                        fileDate = new Date(gitDateStr);
+                    } else {
+                        // 如果文件从未提交过（本地新建），回退到 fs.stat
+                        const stats = await fs.stat(filePath);
+                        fileDate = stats.mtime;
+                    }
+                } catch (e) {
+                    // 兜底方案
+                    const stats = await fs.stat(filePath);
+                    fileDate = stats.mtime;
+                }
 
-                console.log(stats.mtime.toLocaleString('zh-CN', { hour12: false }));
-                
                 list.push({
                     id: file.replace('.md', ''),
-                    // 直接用文件名当标题
                     title: file.replace('.md', ''), 
-                    // 使用修改日期，格式化为 YYYY-MM-DD
-                    date: stats.mtime.toLocaleString('zh-CN', { hour12: false }),
-                    // 保留原始时间对象用于精准排序
-                    rawDate: stats.mtime 
+                    // 强制使用中国时区进行本地化展示
+                    date: fileDate.toLocaleString('zh-CN', { 
+                        timeZone: 'Asia/Shanghai', 
+                        hour12: false 
+                    }),
+                    // 存储 Date 对象以便排序
+                    rawDate: fileDate 
                 });
             }
         }
 
-        // 按修改时间倒序排列（最近修改的排在最前面）
+        // 按修改时间倒序排列
         list.sort((a, b) => b.rawDate.getTime() - a.rawDate.getTime());
 
-        // 写入 JSON
+        // 写入 JSON 时，rawDate 会被序列化，我们可以只保存处理后的 list
         await fs.writeFile(OUTPUT_PATH, JSON.stringify(list, null, 2));
         
         console.log(`✅ 成功生成！共计 ${list.length} 篇文章。`);
-        console.log(list);
+        // 打印前几个看看效果
+        console.table(list.map(i => ({ title: i.title, date: i.date })));
+        
     } catch (err) {
         console.error('❌ 生成失败:', err.message);
     }

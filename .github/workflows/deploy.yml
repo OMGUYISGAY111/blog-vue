@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 必须设置为 0，否则 git log 拿不到准确日期
 
       # 1. 安装 pnpm (这是必须的，否则后面的命令会报错)
       - name: Install pnpm
