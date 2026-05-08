@@ -1,13 +1,10 @@
 name: Deploy Blog
 
 on:
-  # 当你向 main 分支推送代码时触发
   push:
     branches: ["main"]
-  # 允许手动触发
   workflow_dispatch:
 
-# 设置权限以允许部署到 GitHub Pages
 permissions:
   contents: read
   pages: write
@@ -20,18 +17,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # 1. 安装 pnpm (这是必须的，否则后面的命令会报错)
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8 # 或者写 latest
+
+      # 2. 设置 Node 环境，并开启 pnpm 缓存
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
+          cache: 'pnpm'
 
+      # 3. 安装依赖 (使用 pnpm)
       - name: Install dependencies
-        run: npm install
+        run: pnpm install
 
+      # 4. 构建项目
       - name: Build Project
-        # 这里会运行 npm run gen (生成JSON) 和 vite build (打包)
-        run: npm run build
+        # 这里会运行 pnpm run build，内部应包含 node generateBlogList.js
+        run: pnpm run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -39,7 +45,6 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Vite 默认打包输出目录是 dist
           path: './dist'
 
       - name: Deploy to GitHub Pages
