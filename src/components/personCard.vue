@@ -1,122 +1,145 @@
 <script setup>
-// 组件逻辑
-
-  function wtf2() {
-    alert("keep caonima");
+const props = defineProps({
+  name: {
+    type: String,
+    required: true
+  },
+  detail: {
+    type: String,
+    required: true
   }
-
-  const wtf = () => {
-    alert("wocaonima");
-  }
-
-  const props = defineProps({
-    name: {
-      type: String,
-      required: true
-    },
-    detail: {
-      type: String,
-      required: true
-    }
-  })
+})
 </script>
 
 <template>
-  <a href="https://css-tricks.com/a-complete-guide-to-css-media-queries/"  class=" flex h-auto bg-black rounded-3xl p-5 w-full card-container" >
-    <img src="../assets/profileHead.png" class=" h-[50cqw] text-left object-contain rounded-3xl p-3">
-    <div class=" pl-1.5">
-      <h1 class=" min-w-0" id="title">{{ props.name }}</h1>
-      <p class=" text-left">{{ props.detail }}</p>
+  <a href="#" class="card-container">
+    <!-- 左侧头像 -->
+    <img src="../assets/profileHead.png" class="profile-img">
+
+    <div class="text-content">
+      <!-- 1. 初始显示的文字：被无形遮罩控制 -->
+      <div >
+        <h1 id="title">{{ props.name }}</h1>
+        <p class="detail">{{ props.detail }}</p>
+      </div>
+
+      
     </div>
+    <!-- 2. Hover 后出现的文字：反向遮罩显现 -->
+      <div class="hover-message">
+        Enter
+      </div>
   </a>
 </template>
 
 <style scoped>
-    a {
-      position: relative;
-      overflow:hidden;
-    }
-
-    a::before {
-  content: "";
-  position: absolute;
-  width: 50%; 
-  height: 10ch;
-
-  /* 核心修正：这里要写两个背景，用逗号隔开 */
-  background: 
-    /* 1. 画左边的方块 (10ch 宽) */
-    /* 2. 在透明画布上绘画 */
-    /* 左侧：画一个 10ch 宽的实心方块 */
-    linear-gradient(aqua, aqua) no-repeat left / 100% 10ch;
-    /* 右侧：画一个 10ch 宽的圆，圆以外是 transparent（透明） */
-    /* radial-gradient(circle, aqua 69%, transparent 70%) no-repeat right / 10ch 10ch; */
-
-  top: 50%;
-  left: -50%; 
-  transform: translateY(-50%);
-  transition: left 0.4s ease;
-  
-  /* 建议加上这个，防止意外的颜色填充 */
-  background-color: transparent;
+/* 容器基础样式 */
+.card-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: auto;
+  background-color: black;
+  border-radius: 1.5rem;
+  padding: 1.25rem;
+  overflow: hidden;
+  text-decoration: none;
+  container-type: inline-size;
+  transition: background-color 0.3s;
 }
 
-    a:hover::before {
-      left: 50%;
-      transform: translate(-100%, -50%); /* 整体移动到中心 */
-    }
+/* 组合图形 ::before：方块 + 圆 */
+.card-container::before {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  width: 70%; 
+  height: 10ch;
+  
+  /* 左方右圆拼接 */
+  background: 
+    linear-gradient(aqua, aqua) no-repeat left / 80% 10ch,
+    radial-gradient(circle, aqua 69%, transparent 70%) no-repeat right / 10ch 10ch;
 
-    .card-container {
-        container-type: inline-size;
-    }
+  top: 50%;
+  left: -70%; /* 初始藏在左边 */
+  transform: translateY(-50%);
+  transition: left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-    .card-container:hover {
-      background-color: aquamarine;
-    }
+.card-container:hover::before {
+  left: 0;
+}
 
-    #title {
-        text-align: left;
-        margin-bottom: 5px;
-        margin-top: 2cqh;
-        line-height: 1em;
-        font-size: 15cqw;
-    }
-</style>
+/* 文字包装层 */
+.text-content {
+  position: relative;
+  z-index: 2; /* 确保文字在 aqua 图形之上 */
+  padding-left: 0.5rem;
+  flex: 1;
+}
 
+/* 初始文字：被“抹除”动画 */
+.base-text {
+  transition: clip-path 0.5s ease;
+  /* 初始状态：完全可见 */
+  clip-path: inset(0 0 0 0); 
+}
 
-<!-- <template>
-  <div class="flex bg-black rounded-3xl p-5 w-[500px] card-container">
-    <img src="../assets/profileHead.png" class="h-48 w-48 border-2 border-red-500 object-cover rounded-3xl p-3">
-    <div class="pl-1.5 text-white">
-      <h1 id="title">{{ props.name }}</h1>
-      <p>{{ props.detail }}</p>
-    </div>
-  </div>
-</template> -->
+.card-container:hover .base-text {
+  /* Hover 状态：左边缘推到 100%，字就被“抹掉”了 */
+  clip-path: inset(0 0 0 100%);
+}
+/* --- 最左侧显现的新文字 --- */
+.hover-message {
+  position: absolute;
+  top: 50%;
+  left: 15%; /* 这里的 left 控制它在容器最左边的间距 */
+  transform: translateY(-50%);
+  
+  z-index: 10; /* 确保在最顶层 */
+  color: black;
+  font-weight: 900;
+  font-size: 2.5rem;
+  white-space: nowrap;
+  pointer-events: none;
 
-<!-- <style scoped>
-.card-container {
-  /* 关键：必须设置这个才能触发 @container 逻辑 */
-  container-type: inline-size;
-  /* 确保卡片不会被内容撑破 */
-  display: flex;
-  overflow: hidden; 
-  /* 建议添加一个最小宽度，防止在极小空间下显示异常 */
-  min-width: 200px;
+  /* 初始遮罩：完全隐藏 */
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  line-height: 1.2;
+  transition-delay: 0s;
+}
+
+.card-container:hover .hover-message {
+  /* Hover 时从左往右“刷”出来 */
+  clip-path: inset(0 0 0 0);
+  transition-delay: 0.1s;
+}
+/* 其他辅助样式 */
+.profile-img {
+  height: 50cqw;
+  object-contain: contain;
+  border-radius: 1.5rem;
+  padding: 0.75rem;
 }
 
 #title {
-  /* 这里的 5cqw 会随卡片宽度实时变大变小 */
-  font-size: clamp(1.2rem, 5cqw, 2.5rem);
-  white-space: nowrap; /* 标题不折行 */
-  overflow: hidden;
-  text-overflow: ellipsis; /* 如果实在太窄，显示省略号 */
+  color: white;
+  margin-bottom: 5px;
+  line-height: 1em;
+  font-size: 15cqw;
+  text-align: left;
 }
 
-/* 进阶：当卡片宽度小于 300px 时，强制隐藏文字，只留图片或简化布局 */
-@container card-container (max-width: 300px) {
-  .details-box {
-    display: none; /* 极小空间下隐藏详情 */
-  }
+.detail {
+  color: #ccc;
+  text-align: left;
 }
-</style> -->
+
+.card-container:hover {
+  background-color: aquamarine; /* 这里的背景色可以微调或删掉 */
+}
+</style>
