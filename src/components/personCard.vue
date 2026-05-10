@@ -32,6 +32,40 @@
 </template>
 
 <style scoped>
+    a {
+      position: relative;
+      overflow:hidden;
+    }
+
+    a::before {
+  content: "";
+  position: absolute;
+  width: 50%; 
+  height: 10ch;
+
+  /* 核心修正：这里要写两个背景，用逗号隔开 */
+  background: 
+    /* 1. 画左边的方块 (10ch 宽) */
+    /* 2. 在透明画布上绘画 */
+    /* 左侧：画一个 10ch 宽的实心方块 */
+    linear-gradient(aqua, aqua) no-repeat left / 100% 10ch;
+    /* 右侧：画一个 10ch 宽的圆，圆以外是 transparent（透明） */
+    /* radial-gradient(circle, aqua 69%, transparent 70%) no-repeat right / 10ch 10ch; */
+
+  top: 50%;
+  left: -50%; 
+  transform: translateY(-50%);
+  transition: left 0.4s ease;
+  
+  /* 建议加上这个，防止意外的颜色填充 */
+  background-color: transparent;
+}
+
+    a:hover::before {
+      left: 50%;
+      transform: translate(-100%, -50%); /* 整体移动到中心 */
+    }
+
     .card-container {
         container-type: inline-size;
     }
