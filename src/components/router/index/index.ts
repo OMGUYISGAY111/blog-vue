@@ -15,7 +15,7 @@ const router = createRouter({
       component: () => import('../../mainframe/article/article.vue'),
       props: true // 允许将 id 作为组件的 prop 传入
     },
-    
+    { path: '/friend', component: () => import('../../mainframe/friendLink/friend.vue')},
     { path: '/about', component: () => import('../../mainframe/about/about.vue')}
   ]
 })

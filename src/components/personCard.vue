@@ -1,5 +1,14 @@
 <script setup>
 // 组件逻辑
+
+  function wtf2() {
+    alert("keep caonima");
+  }
+
+  const wtf = () => {
+    alert("wocaonima");
+  }
+
   const props = defineProps({
     name: {
       type: String,
@@ -13,25 +22,30 @@
 </script>
 
 <template>
-  <div class=" flex h-auto bg-black rounded-3xl p-5 w-fit card-container" >
-    <img src="../assets/profileHead.png" class=" h-48 text-left object-contain rounded-3xl p-3">
+  <a href="https://css-tricks.com/a-complete-guide-to-css-media-queries/"  class=" flex h-auto bg-black rounded-3xl p-5 w-full card-container" >
+    <img src="../assets/profileHead.png" class=" h-[50cqw] text-left object-contain rounded-3xl p-3">
     <div class=" pl-1.5">
       <h1 class=" min-w-0" id="title">{{ props.name }}</h1>
       <p class=" text-left">{{ props.detail }}</p>
     </div>
-  </div>
+  </a>
 </template>
 
 <style scoped>
     .card-container {
-        container-type: initial;
+        container-type: inline-size;
+    }
+
+    .card-container:hover {
+      background-color: aquamarine;
     }
 
     #title {
         text-align: left;
         margin-bottom: 5px;
+        margin-top: 2cqh;
         line-height: 1em;
-        font-size: clamp(1rem,4cqw,5cqw);
+        font-size: 15cqw;
     }
 </style>
 
