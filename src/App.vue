@@ -38,7 +38,7 @@ watch(() => route.path, (path) => {
   #app:has([class="/friend"]) {
 
     background-image: var(--image-bg);
-    border: 1px solid #333;
+    /* border: 1px solid #333; */
 }
 
 .\/friend {
@@ -53,15 +53,27 @@ watch(() => route.path, (path) => {
   position: absolute;
   top:0%;
   left:0%;
-  background-color: #000000;
-  opacity: 50%;
-  z-index: -100;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: -1;
+  backdrop-filter: blur(10px);
+  filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  pointer-events: none;
+
+  /* 核心：使用 mask-image 控制模糊区域 */
+  /* 我们创建一个从左到右、再从上到下的渐变组合 */
+  mask-image: linear-gradient(to bottom,black 0%, black 20%,black 93%,transparent 100%);
+              
+  
+  /* 确保两个渐变叠加生效 */
+  mask-composite: intersect;
 }
 
 :root {
   background-image: var(--global-bg);
   background-attachment: fixed;
   background-size: cover;
+  z-index: -2;
 }
 
 </style>

@@ -7,7 +7,7 @@ import PersonCard from '@/components/personCard.vue';
 <template>
   <div>
     <h1>我的朋友们</h1>
-    <div class="grid gap-7 lg:grid-cols-2 md:grid-cols-2 mx-[5vw] mt-[5vh]">
+    <div class="grid gap-7 lg:grid-cols-2 md:grid-cols-2 mx-[5vw] mt-[5vh] mb-[15vh]">
         <div class=" flex justify-center">
             <PersonCard 
             name="wrdf"
