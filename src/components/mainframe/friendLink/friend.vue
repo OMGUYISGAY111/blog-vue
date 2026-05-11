@@ -10,8 +10,8 @@ import PersonCard from '@/components/personCard.vue';
     <div class="grid gap-7 lg:grid-cols-2 md:grid-cols-2 mx-[5vw] mt-[5vh] mb-[15vh]">
         <div class=" flex justify-center">
             <PersonCard 
-            name="wrdf"
-            detail="wtf">dfsdf</PersonCard>
+            name="你好发让家人弄不好弄不好弄好吧宁波港不弄个汉尼拔的web"
+            detail="wtfv被对方干部身份更别说公布fdbgnbgnd">dfsdf</PersonCard>
         </div>
         <PersonCard 
         name="wrdf"
@@ -20,7 +20,7 @@ import PersonCard from '@/components/personCard.vue';
         name="wrdf"
         detail="wtf">dfsdf</PersonCard>
         <PersonCard 
-        name="wrdf"
+        name="wrdfvgrgghsrhthgbfdbsfbsfbsngbsfngdn"
         detail="wtf">dfsdf</PersonCard>
         <PersonCard 
         name="wrdf"

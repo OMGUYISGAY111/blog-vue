@@ -1,4 +1,7 @@
 <script setup>
+
+import drawerPic from '@/assets/drawer.png'
+
 const props = defineProps({
   name: {
     type: String,
@@ -12,7 +15,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <a href="#" class="card-container">
+  <a href="#" class="card-container" :style="{'--draw-pic':`url(${drawerPic})`}">
     <!-- 左侧头像 -->
     <img src="../assets/profileHead.png" class="profile-img">
 
@@ -36,7 +39,6 @@ const props = defineProps({
 /* 容器基础样式 */
 .card-container {
   display: flex;
-  align-items: center;
   position: relative;
   width: 100%;
   height: auto;
@@ -47,6 +49,7 @@ const props = defineProps({
   text-decoration: none;
   container-type: inline-size;
   transition: background-color 0.3s;
+  align-items: start;
 }
 
 /* 组合图形 ::before：方块 + 圆 */
@@ -59,10 +62,10 @@ const props = defineProps({
   
   /* 左方右圆拼接 */
   background: 
-    linear-gradient(aqua, aqua) no-repeat left / 80% 10ch,
-    radial-gradient(circle, aqua 69%, transparent 70%) no-repeat right / 10ch 10ch;
+    linear-gradient(aqua, aqua) no-repeat left / 70% 10ch,
+    var(--draw-pic) no-repeat right / 45% 10ch;
 
-  top: 50%;
+  top: 25cqw;
   left: -70%; /* 初始藏在左边 */
   transform: translateY(-50%);
   transition: left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -78,6 +81,7 @@ const props = defineProps({
   z-index: 2; /* 确保文字在 aqua 图形之上 */
   padding-left: 0.5rem;
   flex: 1;
+  text-overflow: ellipsis;
 }
 
 /* 初始文字：被“抹除”动画 */
@@ -94,7 +98,7 @@ const props = defineProps({
 /* --- 最左侧显现的新文字 --- */
 .hover-message {
   position: absolute;
-  top: 50%;
+  top: 25cqw;
   left: 15%; /* 这里的 left 控制它在容器最左边的间距 */
   transform: translateY(-50%);
   
@@ -121,7 +125,7 @@ const props = defineProps({
 /* 其他辅助样式 */
 .profile-img {
   height: 50cqw;
-  object-contain: contain;
+  object-fit: contain;
   border-radius: 1.5rem;
   padding: 0.75rem;
 }
@@ -129,14 +133,18 @@ const props = defineProps({
 #title {
   color: white;
   margin-bottom: 5px;
+  margin-top: 2cqh;
   line-height: 1em;
-  font-size: 15cqw;
+  font-size: 7cqw;
   text-align: left;
+  word-break: break-all;
+  letter-spacing: 2px;
 }
 
 .detail {
   color: #ccc;
   text-align: left;
+  margin-top: 0.7rem;
 }
 
 .card-container:hover {
