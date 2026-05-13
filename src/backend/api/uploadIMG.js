@@ -39,4 +39,8 @@ async function uploadIMG() {
     console.log("help")
 }
 
-uploadIMG();
+if (!process.env.CI) {
+    uploadIMG();
+} else {
+    process.exit(0);
+}

@@ -8,7 +8,7 @@
     "upload": "node ./src/backend/api/uploadIMG.js",
     "dev": "run-p gen upload dev:vite",
     "dev:vite": "vite",
-    "build": "run-p gen dev:vite build",
+    "build": "npm run gen && vite build", 
     "preview": "vite preview"
 },
   "dependencies": {
