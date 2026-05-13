@@ -48,6 +48,19 @@ async function generate() {
 
             if (file.endsWith('.md')) {
                 const filePath = path.join(MD_DIR, file);
+
+                // --- 1. 检测并补齐日期 (针对 CI/Push 场景) ---
+                let content = await fs.readFile(filePath, 'utf-8');
+                if (!content.includes('> **发布日期：')) {
+                    const stats = await fs.stat(filePath);
+                    const dateStr = stats.birthtime.toLocaleString('zh-CN', { 
+                        timeZone: 'Asia/Shanghai', 
+                        hour12: false 
+                    });
+                    const dateHeader = `> **发布日期：${dateStr}**\n\n`;
+                    await fs.writeFile(filePath, dateHeader + content, 'utf-8');
+                    console.log(`[CI/Scan] 已为缺失日期的文件补充头部: ${file.name}`);
+                }
                 
                 let fileDate;
                 try {

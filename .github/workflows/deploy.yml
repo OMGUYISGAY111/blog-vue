@@ -36,6 +36,17 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Generate List and Fix Dates
+        run: npm run gen
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "chore: auto fix md dates and update blogList" || echo "No changes to commit"
+          git push
+
       # 4. 构建项目
       - name: Build Project
         # 这里会运行 pnpm run build，内部应包含 node generateBlogList.js
