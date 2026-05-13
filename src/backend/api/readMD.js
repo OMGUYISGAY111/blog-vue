@@ -59,7 +59,7 @@ async function generate() {
                     });
                     const dateHeader = `> **发布日期：${dateStr}**\n\n`;
                     await fs.writeFile(filePath, dateHeader + content, 'utf-8');
-                    console.log(`[CI/Scan] 已为缺失日期的文件补充头部: ${file.name}`);
+                    console.log(`[CI/Scan] 已为缺失日期的文件补充头部: ${dateStr}`);
                 }
                 
                 let fileDate;
