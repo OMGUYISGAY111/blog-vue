@@ -156,7 +156,7 @@ if (!process.env.CI) {
     updateMD();
 } else {
     console.log("检测到 CI 环境，跳过监听任务，正常退出。");
-    generate();
+    await generate();
     process.exit(0); // 确保进程完全退出
 }
 // getFilesInfo("../../docs");
