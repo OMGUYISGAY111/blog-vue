@@ -3,4 +3,4 @@
 vfsbSAFDvbSFBSFNBSN
 vdsvasdbvadb
 都是悲剧i卡的
-![](src/assets/pic/upload/2026/05/13/wocoa/f55cba3a2efcbf5cfa5c49567e8e9b0d.png)
+![](docs/pic/2026/05/13/你好世界图片/46490e57d8b06daee16aedc1a84859e5.png)

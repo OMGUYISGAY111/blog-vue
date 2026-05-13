@@ -11,7 +11,7 @@ const AOE_md_date = false;
     //pic
     const urlCur = import.meta.url;
     const pathCur = path.dirname(fileURLToPath(urlCur));
-    const picPath = path.join(pathCur,'/../../assets/pic/upload/');
+    const picPath = path.join(pathCur,'/../../../public/docs/pic');
 
 
 // 路径配置
@@ -45,6 +45,7 @@ async function generate() {
         const list = [];
 
         for (const file of files) {
+
             if (file.endsWith('.md')) {
                 const filePath = path.join(MD_DIR, file);
                 
@@ -103,23 +104,28 @@ async function generate() {
 
 async function makeDateDir(filePath) {
     
+    console.log("filep",filePath)
     const dateCur = await getMdDate(filePath);
     console.log(dateCur)
     const fname = path.relative(MD_DIR, filePath);
+    console.log("fname",fname)
     // const F = fs.readdir(filePath);
     // console.log(F);
     const mdP = path.join(picPath,`/${dateCur.year}/${dateCur.month}/${dateCur.day}`,fname.replace('.md',''));
 
-    console.log(mdP);
+    console.log('isityou:',mdP);
     await fs.mkdir(mdP, { recursive: true });
 
 }
  
 async function updateMD() {
 
-    chokidar.watch(MD_DIR,{ignoreInitial: AOE_md_date,}).on('add',async (p) => {
+    chokidar.watch(MD_DIR,{ignoreInitial: AOE_md_date,depth:0}).on('add',async (p) => {
         try {
             const mdStat = await fs.stat(p);
+
+            if (!mdStat.isFile()) return;
+
             const dateStr = mdStat.birthtime.toLocaleString('zh-CN', { 
                         timeZone: 'Asia/Shanghai', 
                         hour12: false 

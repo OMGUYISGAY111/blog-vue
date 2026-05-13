@@ -3,7 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'url';
 import chokidar from 'chokidar';
 
-const rootDir = 'D:\\code\\FrontEnd\\Vue\\blogweb\\blog';
+const rootDir = 'D:\\code\\FrontEnd\\Vue\\blogweb\\blog\\public';
 
 async function uploadIMG() {
 
@@ -12,7 +12,9 @@ async function uploadIMG() {
     //pic
     const urlCur = import.meta.url;
     const pathCur = path.dirname(fileURLToPath(urlCur));
-    const picPath = path.join(pathCur,'/../../assets/pic/upload/');
+    const picPath = path.join(pathCur,'/../../../public/docs/pic');
+
+    console.log('wrf:',picPath)
 
     const list = [];
 
