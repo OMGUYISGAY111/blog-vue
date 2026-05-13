@@ -2,9 +2,17 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { execSync } from 'child_process'; // 引入子进程模块执行 Git 命令
+import chokidar from 'chokidar';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const AOE_md_date = true;
+
+    //pic
+    const urlCur = import.meta.url;
+    const pathCur = path.dirname(fileURLToPath(urlCur));
+    const picPath = path.join(pathCur,'/../../assets/pic/upload/');
+
 
 // 路径配置
 const MD_DIR = path.join(__dirname, '../../../public/docs'); 
@@ -49,6 +57,10 @@ async function generate() {
                     // 存储 Date 对象以便排序
                     rawDate: fileDate 
                 });
+
+                const mdP = path.join(picPath,file.replace('.md',''));
+
+                await fs.mkdir(mdP, { recursive: true });
             }
         }
 
@@ -61,10 +73,20 @@ async function generate() {
         console.log(`✅ 成功生成！共计 ${list.length} 篇文章。`);
         // 打印前几个看看效果
         console.table(list.map(i => ({ title: i.title, date: i.date })));
+
+
         
     } catch (err) {
         console.error('❌ 生成失败:', err.message);
     }
+}
+
+async function updateMD() {
+
+    chokidar.watch(MD_DIR,{ignoreInitial: AOE_md_date,}).on('add',(p) => {
+
+    })
+
 }
 
 generate();

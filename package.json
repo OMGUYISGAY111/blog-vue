@@ -5,12 +5,14 @@
   "type": "module",
   "scripts": {
     "gen": "node ./src/backend/api/readMD.js",
-    "dev": "npm run gen && vite",
+    "upload": "node ./src/backend/api/uploadIMG.js",
+    "dev": "npm run gen && npm run upload && vite",
     "build": "npm run gen && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.2",
+    "chokidar": "^5.0.0",
     "element-plus": "^2.13.7",
     "gray-matter": "^4.0.3",
     "lucide-vue-next": "^1.0.0",
