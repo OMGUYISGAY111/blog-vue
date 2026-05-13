@@ -6,7 +6,7 @@ import chokidar from 'chokidar';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const AOE_md_date = true;
+const AOE_md_date = false;
 
     //pic
     const urlCur = import.meta.url;
@@ -17,6 +17,27 @@ const AOE_md_date = true;
 // 路径配置
 const MD_DIR = path.join(__dirname, '../../../public/docs'); 
 const OUTPUT_PATH = path.join(__dirname, '../../assets/blogList.json');
+
+async function getMdDate(filePath) {
+    try {
+        const content = await fs.readFile(filePath, 'utf-8');
+        
+        // 使用正则匹配
+        const dateRegex = /> \*\*发布日期：(\d{4})\/(\d{1,2})\/(\d{1,2})/;
+        const match = content.match(dateRegex);
+
+        if (!match) return null;
+
+        return {
+            year: match[1],
+            month: match[2].padStart(2, '0'), // 补零处理，5 变成 05
+            day: match[3].padStart(2, '0')    // 11 保持 11
+        };
+    } catch (err) {
+        console.error('读取文件失败:', err);
+        return null;
+    }
+}
 
 async function generate() {
     try {
@@ -60,7 +81,6 @@ async function generate() {
 
                 const mdP = path.join(picPath,file.replace('.md',''));
 
-                await fs.mkdir(mdP, { recursive: true });
             }
         }
 
@@ -81,14 +101,51 @@ async function generate() {
     }
 }
 
+async function makeDateDir(filePath) {
+    
+    const dateCur = await getMdDate(filePath);
+    console.log(dateCur)
+    const fname = path.relative(MD_DIR, filePath);
+    // const F = fs.readdir(filePath);
+    // console.log(F);
+    const mdP = path.join(picPath,`/${dateCur.year}/${dateCur.month}/${dateCur.day}`,fname.replace('.md',''));
+
+    console.log(mdP);
+    await fs.mkdir(mdP, { recursive: true });
+
+}
+ 
 async function updateMD() {
 
-    chokidar.watch(MD_DIR,{ignoreInitial: AOE_md_date,}).on('add',(p) => {
+    chokidar.watch(MD_DIR,{ignoreInitial: AOE_md_date,}).on('add',async (p) => {
+        try {
+            const mdStat = await fs.stat(p);
+            const dateStr = mdStat.birthtime.toLocaleString('zh-CN', { 
+                        timeZone: 'Asia/Shanghai', 
+                        hour12: false 
+                    });
 
+            let content = await fs.readFile(p, 'utf-8');
+            const dateHeader = `> **发布日期：${dateStr}**\n\n`;
+
+            if (!content.includes(dateStr)) {
+            // 如果没找到日期，说明是第一次放图，把日期补在最前面
+                content = dateHeader + content;
+                console.log(`🆕 检测到首次插入图片，已在开头补充日期: ${dateStr}`);
+            }
+
+            await fs.writeFile(p, content, 'utf-8');
+
+            await makeDateDir(p);
+
+        } catch (error) {
+            console.error(error);
+        }
     })
 
 }
 
 generate();
+updateMD();
 
 // getFilesInfo("../../docs");
