@@ -39,7 +39,7 @@ const renderedHtml = computed(() => {
   <div class="prose max-w-none text-left">
     <header class="mb-8 border-l-4 border-blue-500 pl-6">
       <!-- 5. 直接使用从 JSON 里找出来的标题和日期 -->
-      <h1 class="text-4xl font-extrabold tracking-tight text-gray-900">
+      <h1 class="text-4xl font-extrabold tracking-tight text-gray-900 meta-info">
         {{ postMeta.title }}
       </h1>
       <div class="inline-flex items-center px-3 py-1 bg-gray-100 rounded-full text-xs font-medium text-gray-600">
