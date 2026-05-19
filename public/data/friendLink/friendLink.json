@@ -1,0 +1,15 @@
+{
+    "myfriend1": {
+        "name": "垃圾1",
+        "detail": "asdf",
+        "pic": "friend1.jpg",
+        "link": "https://omguyisgay111.github.io/trashbin/"
+    },
+
+    "trashbin": {
+        "name": "垃圾2",
+        "detail": "asdfdfsfsf",
+        "pic": "",
+        "link": ""
+    }
+}

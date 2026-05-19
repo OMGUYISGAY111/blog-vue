@@ -1,6 +1,7 @@
 <script setup>
 
 import drawerPic from '@/assets/drawer.png'
+import { computed } from 'vue';
 
 const props = defineProps({
   name: {
@@ -10,14 +11,31 @@ const props = defineProps({
   detail: {
     type: String,
     required: true
+  },
+  link: {
+    type: String,
+    required: true
+  },
+  pic: {
+    type: String
   }
 })
+
+const picPath = computed(() => {
+
+  const baseUrl = import.meta.env.BASE_URL;
+
+  return props.pic ? `${baseUrl}data/friendLink/pic/${props.pic}` : ''
+})
+
 </script>
 
 <template>
-  <a href="#" class="card-container" :style="{'--draw-pic':`url(${drawerPic})`}">
+  <a :href="props.link" class="card-container" :style="{'--draw-pic':`url(${drawerPic})`}">
     <!-- 左侧头像 -->
-    <img src="../assets/profileHead.png" class="profile-img">
+    
+    <img v-if="props.pic" :src="picPath" class="profile-img">
+    <img v-else src="../assets/profileHead.png" class="profile-img">
 
     <div class="text-content">
       <!-- 1. 初始显示的文字：被无形遮罩控制 -->

@@ -6,7 +6,7 @@
       <router-link 
         v-for="post in paginatedPosts" 
         :key="post.id"
-        :to="`/article/${post.id}`"
+        :to="`/article/post/${post.id}`"
         class="block p-6 bg-black border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border-l-4 border-l-blue-500"
       >
         <h2 class="text-2xl font-bold text-gray-900 mb-2">{{ post.title }}</h2>
