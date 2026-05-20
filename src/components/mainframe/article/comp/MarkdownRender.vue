@@ -33,6 +33,7 @@ onMounted(async () => {
 const renderedHtml = computed(() => {
   return md.render(rawContent.value);
 });
+
 </script>
 
 <template>
@@ -52,3 +53,47 @@ const renderedHtml = computed(() => {
     <div v-html="renderedHtml"></div>
   </div>
 </template>
+
+<style>
+.article-container {
+  h1:not(.meta-info) {
+    margin-top: 3rem;
+  }
+
+  h2:not(.meta-info) {
+    margin-top: 1rem;
+  }
+
+  h3:not(.meta-info) {
+    color: white;
+    margin-top: 0.5rem;
+  }
+
+  a {
+    color: rgb(166, 150, 197);
+    transition: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+  }
+
+  a:hover {
+    color: blueviolet;
+    font-size: 1.1em;
+  }
+
+  a::before {
+    
+  content: '';
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-dasharray='28' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13 6l2 -2c1 -1 3 -1 4 0l1 1c1 1 1 3 0 4l-5 5c-1 1 -3 1 -4 0M11 18l-2 2c-1 1 -3 1 -4 0l-1 -1c-1 -1 -1 -3 0 -4l5 -5c1 -1 3 -1 4 0'%3E%3Canimate fill='freeze' attributeName='stroke-dashoffset' dur='0.6s' values='28;0'/%3E%3C/path%3E%3C/svg%3E");
+  background-color: currentColor;
+  -webkit-mask-image: var(--svg);
+  mask-image: var(--svg);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+
+  }
+}
+</style>

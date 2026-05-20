@@ -166,6 +166,7 @@ async function updateMD() {
 
 // 只有非 CI 环境（即本地）才开启监听
 if (!process.env.CI) {
+    await generate();
     updateMD();
 } else {
     console.log("检测到 CI 环境，跳过监听任务，正常退出。");
