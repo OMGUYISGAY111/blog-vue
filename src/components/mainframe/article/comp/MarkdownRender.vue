@@ -14,15 +14,29 @@ const postMeta = computed(() => {
   return blogList.find(item => item.id === route.params.id) || { title: '未知标题', date: '未知日期' };
 });
 
+function removeFirstLine(text: string):string {
+    let idx = text.indexOf('\n');
+    if (idx === -1) return '';          // 没有换行符，第一行就是全文，删除后为空
+    // 检查是否是 \r\n
+    if (idx > 0 && text[idx - 1] === '\r') {
+        idx = idx - 1;                  // 把 \r 也包含进去
+    }
+    return text.substring(idx + 1);     // +1 跳过换行符
+}
+
+
 onMounted(async () => {
   try {
     const baseUrl = import.meta.env.BASE_URL;
     const response = await fetch(`${baseUrl}docs/${route.params.id}.md`);
+
+    console.log("test")
     
     if (response.ok) {
       const text = await response.text();
       // 3. 去掉正则解析 meta 的部分，直接过滤掉 MD 顶部的 --- 区域（如果还有的话）
-      rawContent.value = text;
+      console.log(text.split("：")[1].split("**")[1]);
+      rawContent.value = removeFirstLine(text);
     }
   } catch (e) {
     console.error("加载失败", e);

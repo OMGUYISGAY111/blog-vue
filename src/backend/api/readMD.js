@@ -81,14 +81,17 @@ async function generate() {
                     fileDate = stats.mtime;
                 }
 
+                let localDate;
+                if (content.includes('> **发布日期：')) {
+                    console.log(content.split("：")[1].split("*")[0]);
+                    localDate = content.split("：")[1].split("*")[0];
+                }
+
                 list.push({
                     id: file.replace('.md', ''),
                     title: file.replace('.md', ''), 
                     // 强制使用中国时区进行本地化展示
-                    date: fileDate.toLocaleString('zh-CN', { 
-                        timeZone: 'Asia/Shanghai', 
-                        hour12: false 
-                    }),
+                    date: localDate,
                     // 存储 Date 对象以便排序
                     rawDate: fileDate 
                 });
@@ -99,7 +102,11 @@ async function generate() {
         }
 
         // 按修改时间倒序排列
-        list.sort((a, b) => b.rawDate.getTime() - a.rawDate.getTime());
+        list.sort((a, b) => {
+            const dateA = a.date.split(' ')[0] + ' ' + a.date.split(' ')[1];
+            const dateB = b.date.split(' ')[0] + ' ' + b.date.split(' ')[1];
+            return new Date(dateB) - new Date(dateA);
+        });
 
         // 写入 JSON 时，rawDate 会被序列化，我们可以只保存处理后的 list
         await fs.writeFile(OUTPUT_PATH, JSON.stringify(list, null, 2));
@@ -147,7 +154,7 @@ async function updateMD() {
             let content = await fs.readFile(p, 'utf-8');
             const dateHeader = `> **发布日期：${dateStr}**\n\n`;
 
-            if (!content.includes(dateStr)) {
+            if (!content.includes("> **发布日期：")) {
             // 如果没找到日期，说明是第一次放图，把日期补在最前面
                 content = dateHeader + content;
                 console.log(`🆕 检测到首次插入图片，已在开头补充日期: ${dateStr}`);
