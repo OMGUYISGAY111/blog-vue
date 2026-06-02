@@ -35,7 +35,6 @@ onMounted(async () => {
     if (response.ok) {
       const text = await response.text();
       // 3. 去掉正则解析 meta 的部分，直接过滤掉 MD 顶部的 --- 区域（如果还有的话）
-      console.log(text.split("：")[1].split("**")[1]);
       rawContent.value = removeFirstLine(text);
     }
   } catch (e) {
