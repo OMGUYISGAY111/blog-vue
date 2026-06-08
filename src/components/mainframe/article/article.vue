@@ -1,5 +1,5 @@
 <template>
-  <div class="article-container break-all m-[5vw]">
+  <div class="article-container break-all m-20">
     <!-- 只有当内容加载完成后才渲染，避免子组件解析空字符串 -->
     <MarkdownRender v-if="articleContent" :content="articleContent" />
     <div v-else class="text-center py-20 text-gray-400">正在加载文章...</div>

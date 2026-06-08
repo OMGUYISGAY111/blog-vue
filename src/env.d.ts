@@ -3,3 +3,9 @@ declare module "*.vue" {
   const component: DefineComponent<{}, {}, any>;
   export default component;
 }
+
+interface HeadingItem {
+  text: string;
+  level: number;
+  display: string;
+}

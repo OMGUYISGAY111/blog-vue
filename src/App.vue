@@ -2,8 +2,9 @@
 import { RouterView, useRoute } from 'vue-router';
 import Navbar from './components/general/navbar.vue';
 import Backtop from './components/backtop.vue';
-import { computed, watch } from 'vue';
+import { computed, provide, ref, watch, type Ref } from 'vue';
 import friendBG from '@/assets/pic/bg/bg1.jpg'
+import ArticleNavBar from './components/mainframe/article/comp/articleNavBar.vue';
 
 const route = useRoute();
 const wtf = computed(() => route.path)
@@ -19,6 +20,12 @@ watch(() => route.path, (path) => {
   }
 }, { immediate: true });
 
+//article heading share
+
+const sharedHeading:Ref<Array<HeadingItem>> = ref([]);
+
+provide('sharedHeading',sharedHeading);
+
 </script>
 
 <template>
@@ -27,6 +34,7 @@ watch(() => route.path, (path) => {
     <main class=" pt-16">
       <RouterView></RouterView>
       <Backtop></Backtop>
+      <ArticleNavBar></ArticleNavBar>
     </main>
   </div>
   <div>

@@ -36,7 +36,7 @@ import type { Ref } from 'vue';
     leave-from-class="opacity-100 translate-y-0"
     leave-to-class="opacity-0 translate-y-10"
     >
-        <button @click="scrollToTop" v-if="isVisible"  class=" fixed bottom-5 right-6 rounded-full bg-amber-100 p-2 shadow-2xl "><ArrowBigUp></ArrowBigUp></button>
+        <button @click="scrollToTop" v-if="isVisible"  class=" fixed bottom-5 right-6 rounded-full bg-gray-600 p-2 shadow-2xl "><ArrowBigUp></ArrowBigUp></button>
     </Transition>
   </div>
 </template>

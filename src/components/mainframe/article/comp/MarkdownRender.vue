@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watch, nextTick, h } from 'vue';
+import { ref, onMounted, computed, watch, nextTick, h, inject, type Ref } from 'vue';
 import { useRoute } from 'vue-router';
 import MarkdownIt from 'markdown-it';
 // 1. 引入你生成的 JSON
@@ -8,6 +8,9 @@ import blogList from '@/assets/blogList.json';
 const route = useRoute();
 const rawContent = ref('');
 const md = new MarkdownIt({ html: true, linkify: true, breaks: true });
+
+// inject must be called at setup top-level, not inside async callbacks
+const sharedHeading = inject<Ref<HeadingItem[]>>('sharedHeading');
 
 // 2. 根据路由 ID 找到对应的文章元数据
 const postMeta = computed(() => {
@@ -50,6 +53,9 @@ const renderedHtml = computed(() => {
 
 // 监听 computed 的值变化（注意：用函数形式返回其值）
 watch(() => renderedHtml.value, async () => {
+
+  const Postheadings:Array<HeadingItem> = [];
+
   console.log("HTML 已更新")
   // 等待 DOM 更新完成
   await nextTick()
@@ -57,12 +63,24 @@ watch(() => renderedHtml.value, async () => {
   const headings = document.querySelectorAll(".article-container h1:not(.meta-info), .article-container h2, .article-container h3")
   console.log("找到的标题：", headings)
 
+const slugCount = new Map<string, number>();
+
 for (const h of headings) {
-    const slug = h.textContent.trim()
+    const baseSlug = h.textContent.trim()
         .toLowerCase()
         .replace(/\s+/g, '-')
         .replace(/[^\w\u4e00-\u9fa5\-]/g, '');
+    
+    const count = (slugCount.get(baseSlug) || 0) + 1;
+    slugCount.set(baseSlug, count);
+    
+    const slug = count === 1 ? baseSlug : `${baseSlug}-${count}`;
     h.setAttribute('id', slug);
+
+    const level = parseInt(h.tagName.charAt(1));
+
+    //init the post
+    Postheadings.push({ text: slug, level, display: h.textContent.trim() });
     
     const anchor = document.createElement("a");
     anchor.setAttribute('class', 'headAnchor');
@@ -78,6 +96,8 @@ for (const h of headings) {
     });
     h.appendChild(anchor);
 }
+
+if (sharedHeading) sharedHeading.value = Postheadings;
 
 })
 
