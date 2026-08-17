@@ -6,7 +6,7 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes: [
     { path: '/', component: Homepage },
-    { path: '/test', component: () => import('../views/test3.vue') },
+    { path: '/test', component: () => import('../views/test4.vue') },
     
     { path: '/article', component: () => import('../../mainframe/article/article-list.vue') },
     //分页

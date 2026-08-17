@@ -38,131 +38,6 @@ function maxArea(height: number[]): number {
     return curMaxArea;
 };
 
-// function threeSum(nums: number[]): number[][] {
-//     // debugger;
-//     const mapNum = new Map<number, number>;
-
-//     const res:number[][] = [];
-
-//     for (let i = 0;i < nums.length;i++) {
-//             let tmp = mapNum.get(nums[i]);
-//             if (tmp !== undefined) {
-//                 mapNum.set(nums[i], tmp + 1);
-//             } else {
-//                 mapNum.set(nums[i], 1);
-//             }
-//         }
-    
-//     const numList:number[] = [];
-
-//     for (let i of mapNum.keys()) {
-//         numList.push(i);
-//     }
-
-//     for (let i = 0;i < numList.length;i++) {
-//         for (let j = i;j < numList.length;j++) {
-//             let threeTuple:Array<number> = new Array(3);
-//             if (hasThreeGroup(numList[i],numList[j],mapNum,threeTuple)) {
-                    
-//                 let flag = false;
-
-//                     if (res.length === 0) {
-//                         res.push(threeTuple);
-//                         continue;
-//                     }
-
-//                 for (let i of res) {
-//                     if (checkSame(i,threeTuple) === true) {
-//                         flag = true
-//                         continue;
-//                     }
-//                 }
-
-//                 if (!flag) {
-//                     res.push(threeTuple);
-//                 }
-//             }
-//         }
-//     }
-    
-//     return res;
-// };
-
-// function hasThreeGroup(numA:number, numB:number, numMap:Map<number,number>, threeTuple:Array<number>) {
-//     // const copy = new Map(numMap);
-    
-//     const update = (key:number) => {
-//         const oldVal = numMap.get(key) ?? 0;
-//         numMap.set(key, oldVal - 1);
-//         return oldVal - 1;
-//     }
-
-//     const aUpdate = update(numA);
-//     const bUpdate = update(numB);
-
-//     if (aUpdate < 0 || bUpdate < 0) {
-
-//         addUpdate(numMap,numA);
-//         addUpdate(numMap,numB);
-
-//         return false;
-//     }
-
-//     let vaildC = numMap.get(0 - (numA + numB));
-
-//     if (vaildC !== undefined && vaildC > 0) {
-//         threeTuple[0] = numA;
-//         threeTuple[1] = numB;
-//         threeTuple[2] = 0 - (numA + numB);
-        
-//         addUpdate(numMap,numA);
-//         addUpdate(numMap,numB);
-
-//         return true;
-//     } else {
-
-//         addUpdate(numMap,numA);
-//         addUpdate(numMap,numB);
-
-//         return false;
-//     }
-// }
-
-// function checkSame(numListA:number[],numListB:number[]) {
-//     const mapA = new Map<number,number>;
-//     const mapB = new Map<number,number>;
-
-//     for (let i of numListA) {
-//         addUpdate(mapA,i);
-//     }
-
-//     for (let b of numListB) {
-//         addUpdate(mapB,b);
-//     }
-
-//     if (mapA.size !== mapB.size) {
-//         return false;
-//     }
-
-//     for (let k of mapA.keys()) {
-//         if (mapA.get(k) !== mapB.get(k)) {
-//             return false;
-//         }
-//     }
-
-//     return true;
-// }
-
-// function addUpdate(mapNum:Map<number,number>,key:number) {
-//         let tmp = mapNum.get(key);
-//             if (tmp !== undefined) {
-//                 mapNum.set(key, tmp + 1);
-//             } else {
-//                 mapNum.set(key, 1);
-//             }
-
-// }
-
 function threeSum(nums: number[]): number[][] {
     
     debugger;
@@ -1507,7 +1382,7 @@ function removeNthFromEnd(head: ListNode | null, n: number): ListNode | null {
 
 function swapPairs(head: ListNode | null): ListNode | null {
 
-    debugger
+    // debugger
     
     let memo = head;
     let lead = head;
@@ -1563,7 +1438,11 @@ function swapPairs(head: ListNode | null): ListNode | null {
 
 };
 
-console.log(swapPairs(test));
+function climbStairs(n: number): number {
+    return 0;
+};
+
+// console.log(swapPairs(test));
 /// console.log(addTwoNumbers(test,test2))
 // console.log(detectCycle(test2))
 // console.log(isPalindrome(test));
