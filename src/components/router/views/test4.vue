@@ -865,8 +865,224 @@ function partitionLabels(s: string): number[] {
       }
  }
 
+function inorderTraversal(root: TreeNode | null): number[] {
+    
+    let res:number[] = []
+    
+    if (root === null) {
+        return res;
+    } else {
+        res = inorderTraversal(root.left);
+        res.push(root.val);
+        res = [...res, ...inorderTraversal(root.right)]
+    }
 
-console.log(jump([2,3,1,1,4]))
+    return res;
+};
+
+function inorderTraversalNode(root: TreeNode | null): TreeNode[] {
+    
+    let res:TreeNode[] = []
+    
+    if (root === null) {
+        return res;
+    } else {
+        res = inorderTraversalNode(root.left);
+        res.push(new TreeNode(root.val, root.left, root.right));
+        res = [...res, ...inorderTraversalNode(root.right)]
+    }
+
+    return res;
+};
+
+function maxDepth(root: TreeNode | null): number {
+    if (root === null) {
+        return 0;
+    } else {
+        let leftDepth = 1 + maxDepth(root.left);
+        let rightDepth = 1 + maxDepth(root.right);
+        return Math.max(leftDepth, rightDepth);
+    }
+};
+
+function invertTree(root: TreeNode | null): TreeNode | null {
+    if (root === null) {
+        return null
+    } else {
+        let tmp = root.left;
+        root.left = root.right;
+        root.right = tmp;
+        root.left = invertTree(root.left)
+        root.right = invertTree(root.right);
+    }
+
+    return root;
+};
+
+/**
+ * 根据层序遍历数组构建二叉树
+ * @param arr - 包含节点值（number）或 null 的数组，null 表示空节点
+ * @returns 树的根节点，若数组为空或第一个元素为 null 则返回 null
+ */
+function buildTree(arr: (number | null)[]): TreeNode | null {
+    // 边界情况：空数组或首元素为 null 表示空树
+    if (!arr || arr.length === 0 || arr[0] === null || arr[0] === undefined) {
+        return null;
+    }
+
+    const root = new TreeNode(arr[0]);
+    const queue: TreeNode[] = [root]; // 队列中存放待分配子节点的父节点
+    let i = 1; // 当前处理的数组索引
+
+    while (i < arr.length && queue.length > 0) {
+        const parent = queue.shift()!; // 取出队首节点作为当前父节点
+
+        // 分配左子节点
+        if (i < arr.length) {
+            const val = arr[i];
+            if (val !== null && val !== undefined) {
+                parent.left = new TreeNode(val);
+                queue.push(parent.left); // 新节点入队，后续可能作为父节点
+            } else {
+                parent.left = null;
+            }
+            i++;
+        }
+
+        // 分配右子节点
+        if (i < arr.length) {
+            const val = arr[i];
+            if (val !== null && val !== undefined) {
+                parent.right = new TreeNode(val);
+                queue.push(parent.right);
+            } else {
+                parent.right = null;
+            }
+            i++;
+        }
+    }
+
+    return root;
+}
+
+function isSymmetric2(root: TreeNode | null): boolean {
+
+    debugger
+
+    const TreeNodeList = inorderTraversalNode(root);
+    const reversedTree = invertTree(root);
+    const reversedList = inorderTraversalNode(reversedTree);
+
+    if (reversedList.length !== TreeNodeList.length) {
+        return false;
+    }
+
+    for (let i = 0;i < reversedList.length;i++) {
+        const revNode = reversedList[i];
+        const norNode = TreeNodeList[i];
+
+        if (revNode.left?.val !== norNode.left?.val || revNode.right?.val !== norNode.right?.val || revNode.val !== norNode.val) {
+            return false;
+        }
+    }
+
+    return true;
+};
+
+function isSymmetric(root: TreeNode | null): boolean {
+    if (!root) {
+        return true;
+    }
+
+    function isMirror(left: TreeNode | null, right: TreeNode | null):boolean {
+        if (!left && !right) {
+            return true;
+        }
+
+        if (!left || !right || left.val !== right.val) {
+            return false;
+        }
+
+        return isMirror(left.left, right.right) && isMirror(left.right, right.left);
+    }
+
+    return isMirror(root.left, root.right);
+}
+
+function diameterOfBinaryTree2(root: TreeNode | null): number {
+    
+    if (root === null) {
+        return 0;
+    }
+    
+    let leftExistPathLen = root.left !== null ? maxDepth(root.left) : 0;
+    let rightExistPathLen = root.right !== null ? maxDepth(root.right) : 0;
+    let CurPosMaxPathLen = leftExistPathLen + rightExistPathLen
+
+    return Math.max(CurPosMaxPathLen, diameterOfBinaryTree(root.left), diameterOfBinaryTree(root.right));
+};
+
+function diameterOfBinaryTree(root: TreeNode | null): number {
+    let maxPath = 0;
+
+    function getDepth(root: TreeNode | null):number {
+        if (!root) {
+            return 0;
+        }
+
+        const leftDep = getDepth(root.left);
+        const rightDep = getDepth(root.right);
+
+        maxPath = Math.max(maxPath, leftDep + rightDep);
+
+        return 1 + Math.max(leftDep, rightDep);
+    }
+
+    getDepth(root);
+
+    return maxPath
+}
+
+function levelOrder(root: TreeNode | null): number[][] {
+
+    let levelNodeArr:number[][] = [];
+    let levelNodeMap:Map<number, number[]> = new Map();
+    inorderTraversalWithLevel(root, 0);
+
+    function inorderTraversalWithLevel(root: TreeNode | null, level:number): void {
+
+        if (root === null) {
+            return;
+        } else {
+            if (levelNodeMap.get(level) === undefined) {
+                levelNodeMap.set(level, []);
+            }
+            const LevelNodeArr = levelNodeMap.get(level);
+            if (LevelNodeArr !== undefined) {
+                levelNodeMap.set(level, [...LevelNodeArr, root.val]);
+            }
+            inorderTraversalWithLevel(root.left, level + 1)
+            inorderTraversalWithLevel(root.right, level + 1)
+        }
+
+        return;
+    };
+
+    for (let key of levelNodeMap.keys()) {
+        levelNodeArr[key] = levelNodeMap.get(key)!;
+    }
+
+    return levelNodeArr;
+};
+
+function sortedArrayToBST(nums: number[]): TreeNode | null {
+    
+};
+
+console.log(levelOrder(buildTree([3,9,20,null,null,15,7])))
+// console.log(isSymmetric(buildTree([1,2,2,3,4,4,3])))
+// console.log(inorderTraversalNode(buildTree([4,2,7,1,3,6,9])));
+// console.log(jump([2,3,1,1,4]))
 // console.log(maxProfit([3,3,3]))
 // console.log(largestRectangleArea([2,1,5,6,2,3]))
 // let another = [2,1,5,6,2,3].reverse()
